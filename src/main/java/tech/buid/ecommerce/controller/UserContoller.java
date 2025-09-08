@@ -33,4 +33,13 @@ public class UserContoller {
                 ResponseEntity.ok(user.get()) :
                 ResponseEntity.notFound().build();
     }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID userId) {
+
+        var deleted = userService.deleteById(userId);
+        return deleted ?
+                ResponseEntity.noContent().build() :
+                ResponseEntity.notFound().build();
+    }
 }
