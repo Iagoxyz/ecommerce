@@ -2,10 +2,7 @@ package tech.buid.ecommerce.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tech.buid.ecommerce.controller.dto.ApiResponse;
-import tech.buid.ecommerce.controller.dto.CreateOrderDto;
-import tech.buid.ecommerce.controller.dto.OrderSummaryDto;
-import tech.buid.ecommerce.controller.dto.PaginationResponse;
+import tech.buid.ecommerce.controller.dto.*;
 import tech.buid.ecommerce.entities.OrderEntity;
 import tech.buid.ecommerce.service.OrderService;
 
@@ -38,6 +35,17 @@ public class OrderController {
                 resp.getContent(),
                 new PaginationResponse(resp.getNumber(), resp.getSize(), resp.getTotalElements(), resp.getTotalPages())
                 ));
+
+    }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderResponseDto> findByOrder(@PathVariable Long orderId) {
+
+        var order = orderService.findById(orderId);
+        return order.isPresent() ?
+                ResponseEntity.ok(OrderResponseDto.fromEntity(order.get())) :
+                ResponseEntity.notFound().build();
+
 
     }
 }
