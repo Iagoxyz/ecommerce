@@ -62,4 +62,12 @@ public class OrderEntity {
     public void setUser(UserEntity user) {
         this.user = user;
     }
+
+    public List<OrderItemEntity> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderItemEntity> items) {
+        this.items = items;
+    }
 }

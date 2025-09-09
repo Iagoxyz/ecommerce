@@ -23,7 +23,7 @@ public class ProductEntity {
     @ManyToMany
     @JoinTable(
             name = "tb_products_tags",
-            uniqueConstraints = @UniqueConstraint(columnNames = {"product_id, tag_id"}),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "tag_id"}),
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<TagEntity> tags;

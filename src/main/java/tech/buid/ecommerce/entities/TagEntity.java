@@ -2,10 +2,9 @@ package tech.buid.ecommerce.entities;
 
 import jakarta.persistence.*;
 
-import java.util.List;
 
 @Entity
-@Table(name = "tb-tags")
+@Table(name = "tb_tags")
 public class TagEntity {
 
     @Id
