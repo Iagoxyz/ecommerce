@@ -1,8 +1,11 @@
 package tech.buid.ecommerce.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import tech.buid.ecommerce.controller.dto.CreateOrderDto;
 import tech.buid.ecommerce.controller.dto.OrderItemDto;
+import tech.buid.ecommerce.controller.dto.OrderSummaryDto;
 import tech.buid.ecommerce.entities.*;
 import tech.buid.ecommerce.exception.CreateOrderException;
 import tech.buid.ecommerce.repository.OrderRepository;
@@ -68,18 +71,7 @@ public class OrderService {
     }
 
     private OrderItemEntity getOrderItem(OrderEntity order, OrderItemDto ordemItemDto) {
-        var toEntity = new OrderItemEntity();
-        var id = new OrderItemId();
-        var product = getProduct(ordemItemDto.productId());
-
-        id.setOrder(order);
-        id.setProduct(product);
-
-        toEntity.setId(id);
-        toEntity.setQuantity(ordemItemDto.quantity());
-        toEntity.setSalePrice(product.getPrice());
-
-        return toEntity;
+        return null;
     }
 
     private ProductEntity getProduct(Long productId) {
@@ -90,5 +82,18 @@ public class OrderService {
     private UserEntity validateUser(CreateOrderDto dto) {
         return userRepository.findById(dto.userId())
                 .orElseThrow(() -> new CreateOrderException("user not found"));
+    }
+
+    public Page<OrderSummaryDto> findAll(Integer page, Integer pageSize) {
+
+        return orderRepository.findAll(PageRequest.of(page, pageSize))
+                .map(entity -> {
+                    return new OrderSummaryDto(
+                            entity.getOrderId(),
+                            entity.getOrderDate(),
+                            entity.getUser().getUserId(),
+                            entity.getTotal()
+                    );
+                });
     }
 }
